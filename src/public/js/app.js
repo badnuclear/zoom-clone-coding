@@ -2,18 +2,23 @@
 //서버로부터 연결
 const socket = new WebSocket(`ws://${window.location.host}`);
 
-//메세지
-socket.addEventListener("open", () => {
+//function
+function handleOpen() {
   console.log("Connected to Server!");
-});
-
-socket.addEventListener("message", (message) => {
+}
+function handleMessage(message) {
   console.log("New message: ", message.data);
-});
-
-socket.addEventListener("close", () => {
+}
+function handleClose() {
   console.log("Shotdown to Server!");
-});
+}
+
+//메세지
+socket.addEventListener("open", handleOpen);
+
+socket.addEventListener("message", handleMessage);
+
+socket.addEventListener("close", handleClose);
 
 setTimeout(() => {
   socket.send("hello from the Brower");

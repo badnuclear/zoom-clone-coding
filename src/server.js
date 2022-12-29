@@ -15,15 +15,19 @@ const handleListen = () => console.log("Listening on http://localhost:3000/!!");
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+function onSocketClose() {
+  console.log("Shotdown to Brower!");
+}
+
+function onSocketMessage(message) {
+  console.log(message.toString("utf8"));
+}
+
 //socket은 서버와 브라우져의 연결
 wss.on("connection", (socket) => {
   console.log("Connected to Brower!");
-  socket.on("close", () => {
-    console.log("Shotdown to Brower!");
-  });
-  socket.on("message", (message) => {
-    console.log(message.toString("utf8"));
-  });
+  socket.on("close", onSocketClose);
+  socket.on("message", onSocketMessage);
   socket.send("hello i'm socket");
 });
 
