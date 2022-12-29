@@ -1,5 +1,7 @@
-//프론트엔드 JS
+//front-end 자바 스크립트
 //서버로부터 연결
+const messageList = document.querySelector("ul");
+const messageForm = document.querySelector("form");
 const socket = new WebSocket(`ws://${window.location.host}`);
 
 //function
@@ -12,6 +14,12 @@ function handleMessage(message) {
 function handleClose() {
   console.log("Shotdown to Server!");
 }
+function handleSubmit(event) {
+  event.preventDefault();
+  const input = messageForm.querySelector("input");
+  socket.send(input.value);
+  input.value = "";
+}
 
 //메세지
 socket.addEventListener("open", handleOpen);
@@ -20,6 +28,4 @@ socket.addEventListener("message", handleMessage);
 
 socket.addEventListener("close", handleClose);
 
-setTimeout(() => {
-  socket.send("hello from the Brower");
-}, 10000);
+messageForm.addEventListener("submit", handleSubmit);

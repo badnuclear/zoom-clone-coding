@@ -1,3 +1,4 @@
+//back-end 자바 스크립트
 import express from "express";
 import WebSocket from "ws";
 import http from "http";
@@ -24,11 +25,15 @@ function onSocketMessage(message) {
 }
 
 //socket은 서버와 브라우져의 연결
+const sockets = [];
+
 wss.on("connection", (socket) => {
+  sockets.push(socket);
   console.log("Connected to Brower!");
   socket.on("close", onSocketClose);
-  socket.on("message", onSocketMessage);
-  socket.send("hello i'm socket");
+  socket.on("message", (message) => {
+    sockets.forEach((aSocket) => aSocket.send(message.toString("utf8")));
+  });
 });
 
 //포트 번호 3000
