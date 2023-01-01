@@ -29,10 +29,22 @@ const sockets = [];
 
 wss.on("connection", (socket) => {
   sockets.push(socket);
+  socket["nickname"] = "Anon";
   console.log("Connected to Brower!");
   socket.on("close", onSocketClose);
-  socket.on("message", (message) => {
-    sockets.forEach((aSocket) => aSocket.send(message.toString("utf8")));
+  socket.on("message", (msg) => {
+    const message = JSON.parse(msg);
+    switch (message.type) {
+      case "new_message":
+        sockets.forEach((aSocket) =>
+          aSocket.send(
+            `${socket.nickname}: ${message.payload.toString("utf8")}`
+          )
+        );
+        break;
+      case "nickname":
+        socket["nickname"] = message.payload;
+    }
   });
 });
 

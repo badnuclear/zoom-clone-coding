@@ -10,8 +10,11 @@ html(lang="en")
         header 
              h1 NOOM 
         main 
+           form#nick
+                input(type="text", placeholder="choose a nickname",requird)
+                button Save 
            ul 
-           form 
-                input(type="text", placeholder="Write a Message")
+           form#message 
+                input(type="text", placeholder="Write a Message",requird)
                 button Send 
         script(src="/public/js/app.js") 
